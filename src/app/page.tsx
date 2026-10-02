@@ -1,3 +1,4 @@
+import { AiSection } from "@/components/sections/ai/AiSection";
 import { Collaboration } from "@/components/sections/collaboration/Collaboration";
 import { Hero } from "@/components/sections/hero/Hero";
 import { Navbar } from "@/components/layout/Navbar";
@@ -13,6 +14,7 @@ export default function HomePage() {
         <Problem />
         <SharedInbox />
         <Collaboration />
+        <AiSection />
       </main>
     </>
   );
