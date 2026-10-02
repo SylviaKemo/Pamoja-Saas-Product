@@ -1,5 +1,6 @@
 import { Hero } from "@/components/sections/hero/Hero";
 import { Navbar } from "@/components/layout/Navbar";
+import { Problem } from "@/components/sections/problem/Problem";
 
 export default function HomePage() {
   return (
@@ -7,6 +8,7 @@ export default function HomePage() {
       <Navbar />
       <main className="relative overflow-x-clip">
         <Hero />
+        <Problem />
       </main>
     </>
   );
