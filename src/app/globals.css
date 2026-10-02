@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Fonts are loaded with next/font in app/layout.tsx and exposed as CSS variables. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-heading: var(--font-bricolage), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* ---------- Brand colours ---------- */
+  --color-forest: #0f3426; /* hero, AI section, mobile menu */
+  --color-pine: #123b2c; /* primary buttons, dark cards */
+  --color-pine-deep: #0c2a1f; /* pine hover */
+  --color-emerald: #1f6b45; /* links and labels on light */
+  --color-leaf: #2e8a5a; /* accents, ticks, dots */
+  --color-leaf-bright: #2e9a62;
+  --color-mint: #7fc79a; /* highlights on dark */
+  --color-mint-pale: #bfe3c9; /* small labels on dark */
+  --color-mint-ice: #e3f2e6; /* monochrome icons on dark */
+  --color-mist: #eaf2ea; /* pale green section */
+  --color-cream: #f6f3ea; /* page background */
+
+  /* ---------- Text ---------- */
+  --color-ink: #15201a; /* headings */
+  --color-body: #55625a; /* body copy */
+  --color-secondary: #3d4a42;
+  --color-muted: #6e7c73;
+  --color-muted-light: #8a948d;
+  --color-on-dark: #c9d6cd; /* body copy on deep green */
+
+  /* ---------- Borders ---------- */
+  --color-sand: #e6e2d6;
+  --color-sand-200: #e3dfd2;
+  --color-sand-100: #ece8dc;
+  --color-sand-50: #eeebe1;
+
+  /* ---------- Breakpoints ---------- */
+  --breakpoint-nav: 56.25rem; /* 900px: desktop navigation */
+  --breakpoint-split: 62.5rem; /* 1000px: two-column sections */
+
+  /* ---------- Shadows ---------- */
+  --shadow-card: 0 2px 4px rgba(21, 32, 26, 0.03), 0 14px 30px rgba(21, 32, 26, 0.05);
+  --shadow-card-hover: 0 20px 40px rgba(21, 32, 26, 0.07);
+  --shadow-panel: 0 20px 44px rgba(21, 32, 26, 0.08);
+
+  /* ---------- Looping animations ---------- */
+  --animate-orb-float: orb-float 12s ease-in-out infinite;
+  --animate-ping-ring: ping-ring 2.6s ease-out infinite;
+  --animate-blink: blink 1.2s infinite;
+  --animate-caret: blink 1s infinite;
+  --animate-shimmer: shimmer 3s linear infinite;
+}
+
+@keyframes orb-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(6deg);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes ping-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-heading;
+  }
+}
+
+/* Gradient text that slides across the label, used by the Pamoja AI chip. */
+@utility text-shimmer {
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
