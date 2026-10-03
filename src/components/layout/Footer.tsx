@@ -23,7 +23,20 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-14 border-t border-sand-200 pt-[22px] text-[13px] text-body">© 2026 Pamoja</div>
+        <div className="mt-14 flex flex-wrap justify-between gap-2 border-t border-sand-200 pt-[22px] text-[13px] text-body">
+          <span>© 2026 Pamoja</span>
+          <span>
+            Developed by{" "}
+            <a
+              href="https://www.linkedin.com/in/sylvia-kemo/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-emerald underline-offset-2 hover:text-pine hover:underline"
+            >
+              Sylvia
+            </a>
+          </span>
+        </div>
       </div>
     </footer>
   );
