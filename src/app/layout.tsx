@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
 import { MotionProvider } from "@/components/providers/MotionProvider";
@@ -26,6 +28,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${bricolage.variable} ${dmSans.variable}`}>
       <body>
         <MotionProvider>{children}</MotionProvider>
+        {/* Vercel Web Analytics and Speed Insights; they only send data when deployed on Vercel. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
