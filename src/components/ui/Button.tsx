@@ -15,6 +15,7 @@ const VARIANTS = {
 } as const;
 
 const SIZES = {
+  xs: "gap-1.5 rounded-lg px-3 py-2 text-[13px]",
   sm: "rounded-[10px] px-4 py-2.5 text-sm",
   md: "rounded-[10px] px-[18px] py-3 text-sm",
   lg: "rounded-[10px] px-5 py-[13px] text-[15px]",
@@ -25,20 +26,33 @@ const SIZES = {
   menu: "w-full justify-center rounded-xl p-[15px] text-base",
 } as const;
 
-type ButtonLinkProps = ComponentProps<"a"> & {
+type StyleProps = {
   variant?: keyof typeof VARIANTS;
   size?: keyof typeof SIZES;
 };
 
+function buttonClasses({ variant = "cream", size = "md" }: StyleProps, className?: string) {
+  return cn(
+    "inline-flex items-center transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf",
+    VARIANTS[variant],
+    SIZES[size],
+    className,
+  );
+}
+
 /** A link styled as a button. */
-export function ButtonLink({ variant = "cream", size = "md", className, ...props }: ButtonLinkProps) {
+export function ButtonLink({ variant, size, className, ...props }: ComponentProps<"a"> & StyleProps) {
+  return <a className={buttonClasses({ variant, size }, className)} {...props} />;
+}
+
+/** A button element with the same styles as ButtonLink, plus a disabled state. */
+export function Button({ variant, size, className, type = "button", ...props }: ComponentProps<"button"> & StyleProps) {
   return (
-    <a
-      className={cn(
-        "inline-flex items-center transition-colors duration-200",
-        VARIANTS[variant],
-        SIZES[size],
-        className,
+    <button
+      type={type}
+      className={buttonClasses(
+        { variant, size },
+        cn("cursor-pointer disabled:pointer-events-none disabled:opacity-50", className),
       )}
       {...props}
     />
