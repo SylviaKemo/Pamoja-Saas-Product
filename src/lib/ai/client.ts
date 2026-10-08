@@ -4,6 +4,7 @@ import {
   ERROR_CODES,
   refinedReplySchema,
   type AnalyzeRequest,
+  type ApiError,
   type ErrorCode,
   type RefineRequest,
 } from "./schemas";
@@ -14,6 +15,8 @@ export class PlaygroundRequestError extends Error {
     readonly code: ErrorCode,
     /** Specific message from the server, e.g. a validation hint. */
     readonly serverMessage?: string,
+    /** How long the server says to wait before retrying (rate limits and quotas). */
+    readonly retryAfterSeconds?: number,
   ) {
     super(code);
     this.name = "PlaygroundRequestError";
@@ -62,9 +65,9 @@ async function postJson<S extends z.ZodType>(
   const data: unknown = await response.json().catch(() => undefined);
 
   if (!response.ok) {
-    const error = (data as { error?: { code?: string; message?: string } } | undefined)?.error;
+    const error = (data as Partial<ApiError> | undefined)?.error;
     const code = ERROR_CODES.find((c) => c === error?.code) ?? "ai_unavailable";
-    throw new PlaygroundRequestError(code, error?.message);
+    throw new PlaygroundRequestError(code, error?.message, error?.retryAfterSeconds);
   }
 
   const result = schema.safeParse(data);
