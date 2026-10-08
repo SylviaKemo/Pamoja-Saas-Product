@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ComponentProps } from "react";
 import { cn } from "@/lib/cn";
 
@@ -40,9 +41,11 @@ function buttonClasses({ variant = "cream", size = "md" }: StyleProps, className
   );
 }
 
-/** A link styled as a button. */
-export function ButtonLink({ variant, size, className, ...props }: ComponentProps<"a"> & StyleProps) {
-  return <a className={buttonClasses({ variant, size }, className)} {...props} />;
+/** A link styled as a button. In-site routes ("/...") use Next.js client-side navigation. */
+export function ButtonLink({ variant, size, className, href = "#", ...props }: ComponentProps<"a"> & StyleProps) {
+  const classes = buttonClasses({ variant, size }, className);
+  if (href.startsWith("/")) return <Link href={href} className={classes} {...props} />;
+  return <a href={href} className={classes} {...props} />;
 }
 
 /** A button element with the same styles as ButtonLink, plus a disabled state. */

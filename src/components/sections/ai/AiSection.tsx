@@ -35,8 +35,8 @@ export function AiSection() {
             ))}
           </div>
 
-          <ButtonLink href="#" className="mt-[30px]">
-            See Pamoja AI in action →
+          <ButtonLink href="/ai-playground" className="mt-[30px]">
+            Try Pamoja AI →
           </ButtonLink>
         </Reveal>
       </Container>

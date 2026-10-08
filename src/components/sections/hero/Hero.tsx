@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 import { ButtonLink } from "@/components/ui/Button";
 import { EASE_OUT } from "@/lib/motion";
@@ -67,6 +68,10 @@ export function Hero() {
             </ButtonLink>
             <ButtonLink href="#product" variant="ghost" size="lg">
               See how it works
+            </ButtonLink>
+            <ButtonLink href="/ai-playground" variant="ghost" size="lg" className="gap-2">
+              <Sparkles aria-hidden size={16} className="text-mint" />
+              Try Pamoja AI
             </ButtonLink>
           </FadeUp>
         </div>
