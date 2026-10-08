@@ -88,7 +88,7 @@ Browser ──POST──▶ /api/ai/analyze | /api/ai/refine   (Node.js route ha
 ### Limits and known trade-offs
 
 - **Rate limiting is best-effort.**
-  - The limit is 8 requests per minute and 60 per day per IP.
+  - The limit is 5 requests per minute and 10 per day per IP (`VISITOR_LIMITS` in `src/lib/ai/schemas.ts`). Analyze and each refine action count as one request.
   - It is kept in memory, so each Vercel serverless instance has its own counts, which reset on a cold start.
   - The real ceiling is Google's free-tier quota, enforced per Google project. For a hard limit, swap `rateLimit.ts` for a shared store such as Upstash Redis.
 - **Free-tier quota.**

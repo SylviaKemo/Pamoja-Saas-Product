@@ -3,7 +3,7 @@ import type { KeyboardEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { TextArea } from "@/components/ui/TextArea";
 import { EXAMPLE_BUSINESS_CONTEXT, SAMPLE_SCENARIOS } from "@/data/playgroundSamples";
-import { LIMITS } from "@/lib/ai/schemas";
+import { LIMITS, VISITOR_LIMITS } from "@/lib/ai/schemas";
 import { Panel } from "./Panel";
 import { SampleScenarios } from "./SampleScenarios";
 
@@ -94,9 +94,11 @@ export function MessagePanel({
               </>
             )}
           </Button>
-          <p className="mt-2 text-center text-xs text-muted-light">
+          <p className="mt-2 text-center text-xs leading-[1.6] text-muted-light">
             Tip: press <kbd className="font-sans font-semibold text-muted">Ctrl</kbd> +{" "}
-            <kbd className="font-sans font-semibold text-muted">Enter</kbd> to analyze
+            <kbd className="font-sans font-semibold text-muted">Enter</kbd> to analyze.
+            <br />
+            Free demo: {VISITOR_LIMITS.perDay} AI requests per visitor per day (analyze or rewrite).
           </p>
         </div>
       </div>

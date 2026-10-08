@@ -110,8 +110,12 @@ export type LimitWindow = "minute" | "day";
 /** Body of every non-2xx response from /api/ai/*. */
 export type ApiError = { error: { code: ErrorCode; message: string; retryAfterSeconds?: number } };
 
-/** Per-visitor request limits for the public demo (enforced best-effort on the server). */
+/**
+ * Per-visitor request limits for the public demo (enforced best-effort on the server).
+ * Analyze and every refine action each count as one request. Kept low so a single visitor
+ * can't use up the project's shared Gemini free-tier quota.
+ */
 export const VISITOR_LIMITS = {
-  perMinute: 8,
-  perDay: 60,
+  perMinute: 5,
+  perDay: 10,
 } as const;
