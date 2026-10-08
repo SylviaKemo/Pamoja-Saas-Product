@@ -8,10 +8,12 @@ import { AiError, toAiError } from "./errors";
  */
 
 /**
- * A stable Flash model listed as free on the Gemini API free tier (checked October 2026).
+ * A stable, lightweight Flash-Lite model on the Gemini API free tier.
+ * Chosen over gemini-3.5-flash, whose free tier allows only 20 requests per day per project
+ * (October 2026). Each model has its own quota; check yours at https://aistudio.google.com/rate-limit.
  * Override with GEMINI_MODEL without changing code.
  */
-export const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash";
+export const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 
 const REQUEST_TIMEOUT_MS = 25_000;
 /** One retry when the model returns JSON that doesn't match the schema. */

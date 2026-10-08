@@ -45,7 +45,7 @@ The **Copy** button copies the current draft. Nothing is ever sent anywhere.
 | Name             | Required | Description                                                                  |
 | ---------------- | -------- | ---------------------------------------------------------------------------- |
 | `GEMINI_API_KEY` | Yes      | Free key from [Google AI Studio](https://aistudio.google.com/apikey). Server-only. |
-| `GEMINI_MODEL`   | No       | Overrides the model. Defaults to `gemini-3.5-flash`.                         |
+| `GEMINI_MODEL`   | No       | Overrides the model. Defaults to `gemini-3.5-flash-lite`.                         |
 
 - **Locally:** put them in `.env.local`. It is git-ignored.
 - **On Vercel:** add them under **Project → Settings → Environment Variables**, then redeploy.
