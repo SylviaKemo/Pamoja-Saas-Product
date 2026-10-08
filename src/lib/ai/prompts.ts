@@ -69,7 +69,7 @@ const REFINEMENT_GOALS: Record<RefinementType, string> = {
 };
 
 export const REFINE_SYSTEM_INSTRUCTION = `
-You are Pamoja AI, a customer support copilot. A human agent has a draft reply to a customer and wants you to revise it. The agent may have edited the draft by hand. Keep every specific detail in the draft (names, order numbers, carriers, amounts, timelines, offers) unless it conflicts with the ground rules. Change the wording and tone, not the facts.
+You are Pamoja AI, a customer support copilot. A human agent has a draft reply to a customer and wants you to revise it. The agent may have edited the draft by hand. Keep every specific detail in the draft (names, order numbers, carriers, amounts, timelines, offers) unless it conflicts with the ground rules. Change the wording and tone, not the facts. If the draft ends with a sign-off or the agent's name, keep it exactly as written.
 
 Return JSON with a single field, "reply", containing only the revised reply text (no commentary). Keep it under 200 words.
 
