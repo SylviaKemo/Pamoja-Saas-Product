@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MessagePanel } from "./MessagePanel";
-import { Panel } from "./Panel";
+import { ResultsPanel } from "./results/ResultsPanel";
 
 /** The two-column workspace: customer message on the left, AI results on the right. */
 export function Playground() {
@@ -20,7 +20,7 @@ export function Playground() {
           onAnalyze={() => {}}
           isAnalyzing={false}
         />
-        <Panel title="Pamoja AI analysis" />
+        <ResultsPanel view={{ status: "idle" }} isStale={false} onAnalyze={() => {}} />
       </div>
     </div>
   );
