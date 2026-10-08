@@ -188,3 +188,7 @@ The work was built up in small branches, each merged into `main`.
 | `feature/ai-prompt-tuning`          | Prompt fixes from live testing                         |
 | `feature/playground-polish`         | Keeps the agent's sign-off when refining               |
 | `docs/ai-playground`                | This README and `.env.example`                         |
+| `feature/ai-lite-model`             | Default to `gemini-3.5-flash-lite` (bigger free quota) |
+| `feature/ai-limit-reset-time`       | Tell visitors when a limit resets                      |
+| `feature/ai-visitor-limits`         | 5 requests/minute, 10/day per visitor                  |
+| `docs/ai-limits`                    | Branch table update                                    |
