@@ -22,8 +22,13 @@ const MAX_ATTEMPTS = 2;
 let client: GoogleGenAI | undefined;
 
 function getClient() {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new AiError("not_configured");
+  // Tolerate stray whitespace or quotes from pasting the key into a dashboard.
+  const apiKey = process.env.GEMINI_API_KEY?.trim().replace(/^["']|["']$/g, "");
+  if (!apiKey) {
+    // Shows up in the deployment's runtime logs; never logs the key itself.
+    console.error("[ai] not_configured: GEMINI_API_KEY is not set for this deployment (add it and redeploy)");
+    throw new AiError("not_configured");
+  }
   client ??= new GoogleGenAI({ apiKey });
   return client;
 }

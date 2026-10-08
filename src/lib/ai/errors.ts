@@ -52,6 +52,7 @@ export function toAiError(error: unknown): AiError {
     if (error.status === 429) return quotaError(error.message);
     // An invalid or missing key comes back as 400 with an API_KEY_INVALID reason, or as 401/403.
     if (error.status === 401 || error.status === 403 || /api[ _]?key/i.test(error.message)) {
+      console.error(`[ai] not_configured: Google rejected GEMINI_API_KEY (status ${error.status}); check the key's value`);
       return new AiError("not_configured");
     }
     if (error.status === 504) return new AiError("timeout");
