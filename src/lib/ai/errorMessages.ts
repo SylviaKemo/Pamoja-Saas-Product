@@ -1,4 +1,28 @@
-import type { ErrorCode } from "./schemas";
+import { VISITOR_LIMITS, type ErrorCode, type LimitWindow } from "./schemas";
+
+/** "about 45 seconds", "about 3 minutes", "about 4 hours". */
+export function formatWait(seconds: number) {
+  if (seconds < 90) return `about ${Math.max(1, Math.round(seconds))} seconds`;
+  if (seconds < 90 * 60) return `about ${Math.round(seconds / 60)} minutes`;
+  const hours = Math.round(seconds / 3600);
+  return `about ${hours} ${hours === 1 ? "hour" : "hours"}`;
+}
+
+/** Explains which limit was hit and when the visitor can try again. */
+export function limitMessage(code: "rate_limited" | "quota_exceeded", window: LimitWindow, retryAfterSeconds: number) {
+  const wait = formatWait(retryAfterSeconds);
+  if (code === "rate_limited") {
+    return window === "day"
+      ? `You've used this demo's ${VISITOR_LIMITS.perDay} free AI requests for today. You can try again in ${wait}.`
+      : `You've sent several requests in a short time. Please try again in ${wait}.`;
+  }
+  return window === "day"
+    ? `This public demo has used its free AI allowance for today. It resets in ${wait}.`
+    : `Lots of people are trying Pamoja AI right now. Please try again in ${wait}.`;
+}
+
+/** Limits longer than this aren't worth a "Try again" button. */
+export const MAX_RETRYABLE_WAIT_SECONDS = 120;
 
 /** User-facing copy for every error the playground can show. Shared by the API routes and the UI. */
 export const ERROR_COPY: Record<ErrorCode, { title: string; message: string; retryable: boolean }> = {

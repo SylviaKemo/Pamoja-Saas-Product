@@ -17,7 +17,7 @@ export async function handleAiRequest<S extends z.ZodType>(
 ): Promise<Response> {
   try {
     const limit = checkRateLimit(getClientId(request));
-    if (!limit.ok) throw new AiError("rate_limited", undefined, limit.retryAfterSeconds);
+    if (!limit.ok) throw new AiError("rate_limited", { retryAfter: limit.retryAfterSeconds, window: limit.window });
 
     const input = await readValidatedBody(request, schema);
     return Response.json(await run(input));
@@ -28,19 +28,19 @@ export async function handleAiRequest<S extends z.ZodType>(
 
 async function readValidatedBody<S extends z.ZodType>(request: Request, schema: S): Promise<z.output<S>> {
   const declaredLength = Number(request.headers.get("content-length") ?? 0);
-  if (declaredLength > MAX_BODY_BYTES) throw new AiError("invalid_input", "That request is too large.");
+  if (declaredLength > MAX_BODY_BYTES) throw new AiError("invalid_input", { message: "That request is too large." });
 
   const raw = await request.text();
-  if (raw.length > MAX_BODY_BYTES) throw new AiError("invalid_input", "That request is too large.");
+  if (raw.length > MAX_BODY_BYTES) throw new AiError("invalid_input", { message: "That request is too large." });
 
   let body: unknown;
   try {
     body = JSON.parse(raw);
   } catch {
-    throw new AiError("invalid_input", "The request body must be JSON.");
+    throw new AiError("invalid_input", { message: "The request body must be JSON." });
   }
 
   const result = schema.safeParse(body);
-  if (!result.success) throw new AiError("invalid_input", result.error.issues[0]?.message);
+  if (!result.success) throw new AiError("invalid_input", { message: result.error.issues[0]?.message });
   return result.data;
 }

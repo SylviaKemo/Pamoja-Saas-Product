@@ -104,5 +104,14 @@ export const ERROR_CODES = [
 
 export type ErrorCode = (typeof ERROR_CODES)[number];
 
+/** Which limit was hit: the short per-minute one or the daily one. */
+export type LimitWindow = "minute" | "day";
+
 /** Body of every non-2xx response from /api/ai/*. */
-export type ApiError = { error: { code: ErrorCode; message: string } };
+export type ApiError = { error: { code: ErrorCode; message: string; retryAfterSeconds?: number } };
+
+/** Per-visitor request limits for the public demo (enforced best-effort on the server). */
+export const VISITOR_LIMITS = {
+  perMinute: 8,
+  perDay: 60,
+} as const;

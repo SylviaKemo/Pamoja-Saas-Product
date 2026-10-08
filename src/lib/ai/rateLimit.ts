@@ -1,3 +1,5 @@
+import { VISITOR_LIMITS, type LimitWindow } from "./schemas";
+
 /**
  * Best-effort, in-memory rate limiting per IP address.
  *
@@ -9,9 +11,9 @@
  * such as Upstash Redis.
  */
 
-const WINDOWS = [
-  { limit: 8, ms: 60_000 }, // 8 requests per minute
-  { limit: 60, ms: 24 * 60 * 60_000 }, // 60 requests per day
+const WINDOWS: { window: LimitWindow; limit: number; ms: number }[] = [
+  { window: "minute", limit: VISITOR_LIMITS.perMinute, ms: 60_000 },
+  { window: "day", limit: VISITOR_LIMITS.perDay, ms: 24 * 60 * 60_000 },
 ];
 
 const LONGEST_WINDOW_MS = Math.max(...WINDOWS.map((w) => w.ms));
@@ -20,18 +22,18 @@ const MAX_TRACKED_CLIENTS = 5_000;
 
 const requestLog = new Map<string, number[]>();
 
-export type RateLimitResult = { ok: true } | { ok: false; retryAfterSeconds: number };
+export type RateLimitResult = { ok: true } | { ok: false; window: LimitWindow; retryAfterSeconds: number };
 
 /** Records a request for `clientId` and reports whether it is within the limits. */
 export function checkRateLimit(clientId: string, now = Date.now()): RateLimitResult {
   const recent = (requestLog.get(clientId) ?? []).filter((t) => now - t < LONGEST_WINDOW_MS);
 
-  for (const { limit, ms } of WINDOWS) {
+  for (const { window, limit, ms } of WINDOWS) {
     const inWindow = recent.filter((t) => now - t < ms);
     if (inWindow.length >= limit) {
       const oldest = inWindow[0];
       requestLog.set(clientId, recent);
-      return { ok: false, retryAfterSeconds: Math.max(1, Math.ceil((oldest + ms - now) / 1000)) };
+      return { ok: false, window, retryAfterSeconds: Math.max(1, Math.ceil((oldest + ms - now) / 1000)) };
     }
   }
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { ResultsView } from "@/components/playground/results/ResultsPanel";
 import { analyzeMessage, isAbortError, PlaygroundRequestError, refineReply } from "@/lib/ai/client";
-import { ERROR_COPY } from "@/lib/ai/errorMessages";
+import { ERROR_COPY, MAX_RETRYABLE_WAIT_SECONDS } from "@/lib/ai/errorMessages";
 import type { RefinementType } from "@/lib/ai/schemas";
 
 /** The inputs a shown analysis was generated from. */
@@ -11,7 +11,10 @@ function describeError(error: unknown) {
   const code = error instanceof PlaygroundRequestError ? error.code : "ai_unavailable";
   const copy = ERROR_COPY[code];
   const message = error instanceof PlaygroundRequestError && error.serverMessage ? error.serverMessage : copy.message;
-  return { ...copy, message };
+  // No point offering "Try again" when the limit only resets in hours.
+  const wait = error instanceof PlaygroundRequestError ? error.retryAfterSeconds : undefined;
+  const retryable = copy.retryable && (wait === undefined || wait <= MAX_RETRYABLE_WAIT_SECONDS);
+  return { title: copy.title, message, retryable };
 }
 
 /** All state and actions for the AI Playground. */
